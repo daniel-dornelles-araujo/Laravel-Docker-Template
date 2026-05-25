@@ -1,14 +1,15 @@
 services:
-  back-end:
+  backend:
     build:
-      context: ./container-assets/back-end
+      context: ./container-assets/backend
       dockerfile: Dockerfile-php
-    container_name: back-end
+    container_name: backend
     restart: "no"
     volumes:
-      - back-end-tmp:/tmp
-      - ./back-end:/var/www/
-      - ./container-assets/back-end/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini
+      - backend-tmp:/tmp
+      - backend-root-folder:/root
+      - ./backend:/var/www/
+      - ./container-assets/backend/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini
     networks:
       - network
     ports:
@@ -17,12 +18,15 @@ services:
     working_dir: /var/www/public
     env_file: .env
 
-  front-end:
+  frontend:
     image: node:22-alpine
-    container_name: front-end
+    container_name: frontend
     restart: "no"
     volumes:
-      - ./front-end:/var/www/
+      - ./frontend:/var/www/
+      - frontend-root-folder:/root
+      - ./container-assets/frontend/dev-server.sh:/var/www/dev-server.sh
+
     working_dir: /var/www
     ports:
       - "8000:80"
@@ -45,8 +49,10 @@ services:
     env_file: .env
 
 volumes:
-  back-end-tmp:
+  backend-tmp:
   db:
+  frontend-root-folder:
+  backend-root-folder:
 
 networks:
   network: {}
