@@ -8,15 +8,22 @@ services:
     volumes:
       - backend-tmp:/tmp
       - backend-root-folder:/root
-      - ./backend:/var/www/
+      - .:/var/www/
       - ./container-assets/backend/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini
     networks:
       - network
     ports:
       - "8123:80"
     command: "php -S 0.0.0.0:80"
-    working_dir: /var/www/public
+    working_dir: /var/www/backend/public
     env_file: .env
+    environment:
+      - DB_CONNECTION=mariadb
+      - DB_HOST=${MARIADB_HOST}
+      - DB_PORT=${MARIADB_PORT}
+      - DB_DATABASE=${MARIADB_DATABASE}
+      - DB_USERNAME=${MARIADB_USER}
+      - DB_PASSWORD=${MARIADB_PASSWORD}
 
   frontend:
     image: node:22-alpine

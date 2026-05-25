@@ -1,5 +1,5 @@
 # Laravel Docker Template
-A template for Laravel + MariaDB using Docker
+A template for Laravel + Quasar + MariaDB using Docker
 
 # Requisites
  - A Linux system (WSL is probably fine)
@@ -8,7 +8,8 @@ A template for Laravel + MariaDB using Docker
  - An Internet connection
 
 # App Install
- - Edit `frontend/.env` and replace `localhost` with the IP address for the machine running the app (only needed if the browser and the app live in distinct machines)
+ - Copy .env.example to .env
+ - if the app lives in a separate machine, such as a VM, VPS, homelab, etc, replace `localhost` with the IP address for the machine running the app
  - Run ./install.sh and wait a little
   
 # Using the app
