@@ -1,0 +1,52 @@
+services:
+  back-end:
+    build:
+      context: ./container-assets/back-end
+      dockerfile: Dockerfile-php
+    container_name: back-end
+    restart: "no"
+    volumes:
+      - back-end-tmp:/tmp
+      - ./back-end:/var/www/
+      - ./container-assets/back-end/php-xdebug.ini:/usr/local/etc/php/conf.d/php-xdebug.ini
+    networks:
+      - network
+    ports:
+      - "8123:80"
+    command: "php -S 0.0.0.0:80"
+    working_dir: /var/www/public
+    env_file: .env
+
+  front-end:
+    image: node:22-alpine
+    container_name: front-end
+    restart: "no"
+    volumes:
+      - ./front-end:/var/www/
+    working_dir: /var/www
+    ports:
+      - "8000:80"
+      - "9000:9000"
+    command: "sh ./dev-server.sh"
+
+  #Database
+  db:
+    image: mariadb:12
+    container_name: db
+    ports:
+        # The HTTP port
+        - "33006:3306"
+    restart: "no"
+    tty: true
+    volumes:
+        - db:/var/lib/mysql
+    networks:
+        - network
+    env_file: .env
+
+volumes:
+  back-end-tmp:
+  db:
+
+networks:
+  network: {}
