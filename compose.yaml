@@ -3,7 +3,7 @@ services:
     build:
       context: ./container-assets/backend
       dockerfile: Dockerfile-php
-    container_name: backend
+    # container_name: backend
     restart: "no"
     volumes:
       - backend-tmp:/tmp
@@ -24,10 +24,14 @@ services:
       - DB_DATABASE=${MARIADB_DATABASE}
       - DB_USERNAME=${MARIADB_USER}
       - DB_PASSWORD=${MARIADB_PASSWORD}
+      - MAIL_MAILER=smtp
+      - MAIL_HOST=email
+      - MAIL_PORT=1025
+      - MAIL_ENCRYPTION=null
 
   frontend:
     image: node:22-alpine
-    container_name: frontend
+    # container_name: frontend
     restart: "no"
     volumes:
       - ./frontend:/var/www/
@@ -43,7 +47,7 @@ services:
   #Database
   db:
     image: mariadb:12
-    container_name: db
+    # container_name: db
     ports:
         # The HTTP port
         - "33006:3306"
@@ -55,11 +59,27 @@ services:
         - network
     env_file: .env
 
+  #Email testing
+  email:
+    image: axllent/mailpit
+    networks:
+      - network
+    volumes:
+      - email:/data
+    environment:
+      - P_DATABASE=/data/mailpit.db
+      # - MP_UI_AUTH_FILE=/data/authfile
+      - TZ=America/Sao_Paulo
+    ports:
+      - 8025:8025
+      - 1025:1025
+
 volumes:
   backend-tmp:
   db:
   frontend-root-folder:
   backend-root-folder:
+  email:  
 
 networks:
   network: {}
