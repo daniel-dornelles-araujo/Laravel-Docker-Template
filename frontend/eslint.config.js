@@ -39,6 +39,8 @@ export default defineConfigWithVueTs(
     files: ['**/*.ts', '**/*.vue'],
     rules: {
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+      indent: ['error', 2],
+      'vue/html-indent': ['error', 2],
     },
   },
   // https://github.com/vuejs/eslint-config-typescript

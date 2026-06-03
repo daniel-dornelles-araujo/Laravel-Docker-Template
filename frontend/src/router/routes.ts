@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
+import userRoutes from './users';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -13,6 +14,8 @@ const routes: RouteRecordRaw[] = [
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),
   },
+
+  ...userRoutes,
 ];
 
 export default routes;
